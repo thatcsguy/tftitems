@@ -1,0 +1,249 @@
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<style>
+		body {
+			background-color: #011865;
+			color: white;
+			font-size: 18px;
+		}
+		p {
+			margin-block-start: .2em;
+			margin-block-end: .2em;
+		}
+		.big-item {
+			height: 72px;
+			width: 72px;
+			background-size: cover;
+			display: inline-block;
+			margin: 0 0 10px 10px;
+			border: 1px solid white;
+		}
+		.combo {
+			height: auto;
+			width: 250px;
+			border: 1px solid white;
+			display: inline-block;
+			margin: 0 0 10px 10px;
+			padding: 4px;
+			overflow: hidden;
+			background-color: #545454;
+		}
+		.combo-img {
+			height: 108px;
+			width: 72px;
+			float: left;
+			border: 1px solid white;
+			margin-right: 4px;
+			overflow: hidden;
+		}
+		.combo-item-big {
+			height: 72px;
+			width: 72px;
+			background-size: cover;
+			float: left;
+		}
+		.combo-item-small {
+			height: 36px;
+			width: 36px;
+			background-size: cover;
+			float: left;
+		}
+		.combo-item-desc {
+			font-size: 15px;
+		}
+		.itempool, .inventory, .combos-wrap {
+			width: 900px;
+			height: auto;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 10px;
+			text-align: center;
+		}
+		//base items{}
+		.item-2 { background-image: url('bfsword.png') }
+		.item-3 { background-image: url('giantsbelt.png') }
+		.item-5 { background-image: url('needlesslylargerod.png') }
+		.item-7 { background-image: url('chainvest.png') }
+		.item-11 { background-image: url('negatroncloak.png') }
+		.item-13 { background-image: url('recurvebow.png') }
+		.item-17 { background-image: url('tearofthegoddess.png') }
+		.item-19 { background-image: url('spatula.png') }
+		
+		//bf items{}
+		.item-4 { background-image: url('infinityedge.png') }
+		.item-6 { background-image: url('zekesherald.png') }
+		.item-10 { background-image: url('hextechgunblade.png') }
+		.item-14 { background-image: url('guardianangel.png') }
+		.item-22 { background-image: url('bloodthirster.png') }
+		.item-26 { background-image: url('swordofthedivine.png') }
+		.item-34 { background-image: url('spearofshojin.png') }
+		.item-38 { background-image: url('youmuusghostblade.png') }
+		
+		//belt items{}
+		.item-9 { background-image: url('warmogsarmor.png') }
+		.item-15 { background-image: url('morellonomicon.png') }
+		.item-21 { background-image: url('redbuff.png') }
+		.item-33 { background-image: url('zephyr.png') }
+		.item-39 { background-image: url('titanichydra.png') }
+		.item-51 { background-image: url('redemption.png') }
+		.item-57 { background-image: url('frozenmallet.png') }
+		
+		//rod items{}
+		.item-25 { background-image: url('rabadonsdeathcap.png') }
+		.item-35 { background-image: url('locketoftheironsolari.png') }
+		.item-55 { background-image: url('ionicspark.png') }
+		.item-65 { background-image: url('guinsoosrageblade.png') }
+		.item-85 { background-image: url('ludensecho.png') }
+		.item-95 { background-image: url('yuumi.png') }
+		
+		//vest items{}
+		.item-49 { background-image: url('thornmail.png') }
+		.item-77 { background-image: url('swordbreaker.png') }
+		.item-91 { background-image: url('phantomdancer.png') }
+		.item-119 { background-image: url('frozenheart.png') }
+		.item-133 { background-image: url('knightsvow.png') }
+		
+		//cloak items{}
+		.item-121 { background-image: url('dragonsclaw.png') }
+		.item-143 { background-image: url('cursedblade.png') }
+		.item-187 { background-image: url('hush.png') }
+		.item-209 { background-image: url('runaanshurricane.png') }
+		
+		//bow items{}
+		.item-169 { background-image: url('rapidfirecannon.png') }
+		.item-221 { background-image: url('statikkshiv.png') }
+		.item-247 { background-image: url('bladeoftheruinedking.png') }
+		
+		//tear items{}
+		.item-289 { background-image: url('seraphsembrace.png') }
+		.item-323 { background-image: url('darkin.png') }
+		
+		//spatula items{}
+		.item-361 { background-image: url('forceofnature.png') }
+		
+	</style>
+	<script>
+		const itemData = {
+			4  : {title:'Infinity Edge', details:'Critical Strikes deal +100% damage.'},
+			6  : {title:'Zeke\'s Herald', details:'Adjacent allies gain +12.5% Attack Speed.'},
+			10 : {title:'Hextech Gunblade', details:'Heal for 25% of all damage dealt.'},
+			14 : {title:'Guardian Angel', details:'Wearer revives with 300 Health.'},
+			22 : {title:'Bloodthirster', details:'Attacks heal for 35% of damage.'},
+			26 : {title:'Sord of the Divine', details:'Each second, the wearer has a 5% chance to gain 100% Critical Strike.'},
+		    34 : {title:'Spear of Sho\'jin', details:'After casting, wearer gains 20% of its max mana per attack.'},
+	        38 : {title:'Youmuu\'s Ghostblade', details:'Wearer is also an Assassin.'},
+			
+			9  : {title:'Warmog\'s Armor', details:'Wearer regenerates 2.5% max Health per second.'},
+			15 : {title:'Morellonomicon', details:'Spells deal burn damage equal to 5% of the enemy\'s maximum health per second.'},
+			21 : {title:'Red Buff', details:'Attacks deal 2.5% burn damage.'},
+			33 : {title:'Zephyr', details:'On start of combat, banish an enemy for 5 seconds.'},
+			39 : {title:'Titanic Hydra', details:'Attacks deal 10% of the wearer\'s max Health as splash damage.'},
+			51 : {title:'Redemption', details:'On death, heal all nearby allies for 1000 Health.'},
+		    57 : {title:'Frozen Mallet', details:'Wearer is also a Glacial.'},
+			
+			25 : {title:'Rabadon\'s Deathcap', details:'+50% Ability Power.'},
+			35 : {title:'Locket of the Iron Solari', details:'On start of combat, all adjacent allies gain a shield of 200.'},
+			55 : {title:'Ionic Spark', details:'Whenever an enemy casts a spell, they take 100 damage.'},
+			65 : {title:'Guinsoo\'s Rageblade', details:'Attacks grant 3% Attack Speed. Stacks infinitely.'},
+			85 : {title:'Luden\'s Echo', details:'Spells deal 100 splash damage on hit.'},
+			95 : {title:'Yuumi', details:'Wearer is also a Sorcerer.'},
+			
+			49 : {title:'Thornmail', details:'Reflect 25% of damage taken from attacks.'},
+			77 : {title:'Swordbreaker', details:'Attacks have a chance to disarm.'},
+			91 : {title:'Phantom Dancer', details:'Wearer dodges all Critical Strikes.'},
+			119: {title:'Frozen Heart', details:'Adjacent enemies lose 20% Attack Speed.'},
+			133: {title:'Knight\'s Vow', details:'Wearer is also a Knight.'},
+			
+			121: {title:'Dragon\'s Claw', details:'Gain 83% resistance to magic damage.'},
+			143: {title:'Cursed Blade', details:'Attacks have a low chance to Shrink (Reduce enemy\'s star level by 1).'},
+			187: {title:'Hush', details:'Attacks have a high chance to Silence.'},
+			209: {title:'Runaan\'s Hurricane', details:'Attacks 2 extra targets on attack. Extra attacks deal 50% damage.'},
+			
+			169: {title:'Rapidfire Cannon', details:'Wearer\'s attacks cannot be dodged. Attack Range is doubled.'},
+			221: {title:'Statikk Shiv', details:'Every 3rd attack deals 100 splash magical damage.'},
+			247: {title:'Blade of the Ruined King', details:'Wearer is also a Blademaster.'},
+			
+			289: {title:'Seraph\'s Embrace', details:'Regain 20% mana each time a spell is cast.'},
+			323: {title:'Darkin', details:'Wearer is also a Demon.'},
+			
+			361: {title:'Force of Nature', details:'Gain +1 team size.'},
+		};
+		
+		const bigItem = (id) => {
+			return '<div class="big-item item-' + id + '" data-itemid="' + id + '"></div>';
+		};
+		
+		const comboItemBig = (id) => {
+			return '<div class="combo-item-big item-' + id + '" data-itemid="' + id + '"></div>';
+		};
+		
+		const comboItemSmall = (id) => {
+			return '<div class="combo-item-small item-' + id + '" data-itemid="' + id + '"></div>';
+		};
+		
+		const itemCombo = (id1, id2) => {
+			var resultId = id1*id2;
+			var comboDiv = '<div class="combo">';
+			comboDiv += '<div class="combo-img">' + comboItemBig(resultId) + comboItemSmall(id1 < id2 ? id1 : id2) + comboItemSmall(id1 < id2 ? id2 : id1) + '</div>';
+			comboDiv += '<p>' + itemData[resultId].title + '<\p>'
+			comboDiv += '<p class="combo-item-desc">' + itemData[resultId].details + '</p>';
+			comboDiv += '</div>';
+			return comboDiv;
+		};
+		
+	    const addBaseItem = (id) => {
+			$('.inventory').append(bigItem(id));
+			updateCombos();
+		};
+		
+		const updateCombos = () => {
+			$('.combos').empty();
+			var items = $('.inventory .big-item').map(function() { return $(this).data('itemid') });
+			var added = [];
+			for (var i = 0;i < items.length - 1;i++) {
+				for (var j = i+1;j < items.length;j++) {
+					if(!added.includes(items[i]*items[j])) {
+						added.push(items[i]*items[j]);
+						$('.combos').append(itemCombo(items[i], items[j]));
+					}
+				}
+			}
+		};
+		
+		$(document).ready(function() {
+			$('.itempool .big-item').click(function(e) {
+				addBaseItem($(e.target).data('itemid'));
+			});
+			
+			$('.inventory').click(function(e) {
+				if($(e.target).hasClass('big-item')) {
+					$(e.target).remove();
+					updateCombos();
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+<div class='itempool'>
+	<p>Click items as you aquire them to add them to your inventory:</p>
+	<div class='big-item item-2' data-itemid='2'></div>
+	<div class='big-item item-3' data-itemid='3'></div>
+	<div class='big-item item-5' data-itemid='5'></div>
+	<div class='big-item item-7' data-itemid='7'></div>
+	<div class='big-item item-11' data-itemid='11'></div>
+	<div class='big-item item-13' data-itemid='13'></div>
+	<div class='big-item item-17' data-itemid='17'></div>
+	<div class='big-item item-19' data-itemid='19'></div>
+</div>
+<div class='inventory'>
+	<p>Your items (click to remove):</p>
+</div>
+<div class='combos-wrap'>
+	<p>Possible item combinations:</p>
+	<div class='combos'>
+	</div>
+</div>
+</body>
+</html>
